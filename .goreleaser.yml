@@ -1,0 +1,36 @@
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+    ldflags:
+      - -s -w -X github.com/SecDelta/Vsync/meta.version={{.Version}} -X github.com/SecDelta/Vsync/meta.commit={{.Commit}}
+archives:
+  - format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    wrap_in_directory: true
+    files:
+      - LICENSE
+      - README.md
+
+release:
+  github:
+    owner: SecDelta
+    name: Vsync
+
+checksum:
+  name_template: 'checksums.txt'
+  algorithm: sha256
+
+changelog:
+  disable: true
