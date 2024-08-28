@@ -1,4 +1,7 @@
+![](./img/vsync-logo.png)
+
 # Vsync
+
 ![Build Status](https://github.com/SecDelta/Vsync/actions/workflows/release.yml/badge.svg)
 
 
