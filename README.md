@@ -1,4 +1,4 @@
-![](./img/vsync-logo.png)
+<img src="./img/vsync-logo.png" alt="Vsync Logo" width="200"/>
 
 # Vsync
 
