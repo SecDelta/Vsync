@@ -1,4 +1,6 @@
 # Vsync
+![Build Status](https://github.com/SecDelta/Vsync/actions/workflows/release.yml/badge.svg)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/SecDelta/Vsync)](https://github.com/SecDelta/Vsync/releases)
 
 A command-line tool to replicate secrets between two HashiCorp Vault instances using the KV version 2 secrets engine.
 
