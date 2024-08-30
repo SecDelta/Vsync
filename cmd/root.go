@@ -1,17 +1,16 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"os"
 
 	"github.com/SecDelta/Vsync/meta"
-	vault "github.com/SecDelta/Vsync/pkg"
+	kv "github.com/SecDelta/Vsync/pkg"
 	"github.com/spf13/cobra"
 )
 
 var (
-	srcVault, destVault, srcToken, destToken, secretPath, cfgFile string
+	srcVault, destVault, srcToken, destToken, kvPath string
 )
 
 var rootCmd = &cobra.Command{
@@ -38,10 +37,13 @@ var kvCmd = &cobra.Command{
 			log.Fatalf("Vault tokens are required but not provided")
 		}
 
-		if err := vault.ReplicateKVSecrets(srcVault, destVault, srcToken, destToken, secretPath); err != nil {
+		if kvPath == "" {
+			kvPath = "secret"
+		}
+
+		if err := kv.ReplicateKVSecrets(srcVault, destVault, srcToken, destToken, kvPath); err != nil {
 			log.Fatalf("Error replicating KV secrets: %s", err)
 		}
-		fmt.Printf("Successfully replicated KV secrets from %s to %s under path %s\n", srcVault, destVault, secretPath)
 	},
 }
 
@@ -54,12 +56,11 @@ func Execute() {
 
 func init() {
 	rootCmd.AddCommand(kvCmd)
-
 	kvCmd.Flags().StringVarP(&srcVault, "src-vault", "s", "", "Source Vault address (required)")
 	kvCmd.Flags().StringVarP(&destVault, "dest-vault", "d", "", "Destination Vault address (required)")
 	kvCmd.Flags().StringVarP(&srcToken, "src-token", "", "", "Source Vault token")
 	kvCmd.Flags().StringVarP(&destToken, "dest-token", "", "", "Destination Vault token")
-	kvCmd.Flags().StringVarP(&secretPath, "path", "p", "", "Secret Path to replicate secrets")
+	kvCmd.Flags().StringVarP(&kvPath, "path", "p", "secret", "KV engine path (e.g., 'secret')")
 	kvCmd.MarkFlagRequired("src-vault")
 	kvCmd.MarkFlagRequired("dest-vault")
 }
