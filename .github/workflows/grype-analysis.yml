@@ -1,0 +1,44 @@
+name: Grype Vulnerability Scan
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+  pull_request:
+    branches:
+      - main
+      - "feature/**"
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Grype
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sudo sh -s -- -b /usr/local/bin
+
+      - name: Scan with Grype
+        run: |
+          grype .
+
+      - name: Scan Docker image with Grype
+        run: |
+          docker build -t my-app:latest .
+          grype my-app:latest
+
+      - name: Upload Grype scan report
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: grype-report
+          path: ./grype.json
+
+      - name: Fail if vulnerabilities found
+        run: |
+          if grype . --output json | jq -e '.matches | length > 0'; then
+            echo "Vulnera
