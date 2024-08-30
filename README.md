@@ -62,7 +62,7 @@ Flags:
       --dest-token string   Destination Vault token
   -d, --dest-vault string   Destination Vault address (required)
   -h, --help                help for kv
-  -p, --path string         Secret Path to replicate secrets
+  -p, --path string         KV engine path (e.g., 'secret') (default "secret")
       --src-token string    Source Vault token
   -s, --src-vault string    Source Vault address (required)
 ```
