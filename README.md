@@ -5,7 +5,7 @@
 ![Build Status](https://github.com/SecDelta/Vsync/actions/workflows/release.yml/badge.svg)
 
 
-A command-line tool to replicate secrets between two HashiCorp Vault instances using the KV version 2 secrets engine.
+A command-line tool to replicate KV Secrets between two HashiCorp Vault instances.
 
 ## Use Case
 
