@@ -1,0 +1,55 @@
+name: Dependency Security Scan
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+  pull_request:
+    branches:
+      - main
+      - "feature/**"
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Syft
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sudo sh -s -- -b /usr/local/bin
+
+      - name: Set up Grype
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sudo sh -s -- -b /usr/local/bin
+
+      - name: Generate SBOM with Syft for the current directory
+        run: |
+          syft dir:. -o json > syft-sbom.json
+
+      - name: Scan for vulnerabilities with Grype using SBOM
+        run: |
+          grype sbom:./syft-sbom.json -o table > grype-report.txt
+          grype sbom:./syft-sbom.json -o json > grype-report.json
+
+      - name: Upload Grype scan report
+        uses: actions/upload-artifact@v3
+        with:
+          name: grype-report
+          path: grype-report.txt
+
+      - name: Upload Grype scan report (JSON)
+        uses: actions/upload-artifact@v3
+        with:
+          name: grype-report-json
+          path: grype-report.json
+
+      - name: Fail if vulnerabilities found
+        run: |
+          if grype sbom:./syft-sbom.json -o json | jq -e '.matches | length > 0'; then
+            echo "Vulnerabilities found!"
+            exit 1
+          fi
