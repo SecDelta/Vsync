@@ -4,6 +4,7 @@
 
 ![Build Status](https://github.com/SecDelta/Vsync/actions/workflows/release.yml/badge.svg)
 [![Dependency Security Scan](https://github.com/SecDelta/Vsync/actions/workflows/sbom.yml/badge.svg)](https://github.com/SecDelta/Vsync/actions/workflows/sbom.yml)
+![Latest Release](https://img.shields.io/github/v/release/SecDelta/Vsync?include_prereleases)
 
 
 A command-line tool to replicate KV Secrets between two HashiCorp Vault instances.
