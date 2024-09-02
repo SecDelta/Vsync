@@ -36,13 +36,13 @@ jobs:
           grype sbom:./syft-sbom.json -o json > grype-report.json
 
       - name: Upload Grype scan report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: grype-report
           path: grype-report.txt
 
       - name: Upload Grype scan report (JSON)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: grype-report-json
           path: grype-report.json
